@@ -1,0 +1,15 @@
+name: stop-brev-gha-runner
+description: Delete ephemeral self-hosted GitHub Actions runners on NVIDIA Brev.
+runs:
+  using: docker
+  image: Dockerfile
+inputs:
+  instance_mapping:
+    description: "JSON object mapping Brev instance names to GitHub runner labels. Use the start action's mapping output."
+    required: true
+  brev_org:
+    description: "Optional Brev organization name. Uses the token's active organization by default."
+    required: false
+  repo:
+    description: "Repository containing the runner registrations. Defaults to the current repository."
+    required: false

@@ -1,0 +1,20 @@
+[project]
+name = "stop-brev-gha-runner"
+version = "0.1.0"
+description = "Stop ephemeral GitHub Actions runners on NVIDIA Brev"
+readme = "README.md"
+authors = [
+    { name = "Ethan Holz", email = "ethan.holz@omsf.io" }
+]
+requires-python = ">=3.12"
+dependencies = ["gha-runner>=0.7.0"]
+
+[project.scripts]
+stop-brev-gha-runner = "stop_brev_gha_runner:main"
+
+[build-system]
+requires = ["uv_build>=0.11.19,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 80
