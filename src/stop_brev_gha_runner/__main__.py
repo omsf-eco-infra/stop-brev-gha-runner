@@ -10,16 +10,21 @@ from .stop import StopBrev, parse_instance_mapping
 
 def main():
     env = dict(os.environ)
-    check_required(env, ["GH_PAT", "BREV_TOKEN", "INPUT_INSTANCE_MAPPING"])
+    if env.get("INPUT_BREV_ORG"):
+        raise ValueError(
+            "brev_org is no longer supported. Create a BREV_API_KEY in the "
+            "organization that owns the runners and remove brev_org."
+        )
+    check_required(env, ["GH_PAT", "BREV_API_KEY", "INPUT_INSTANCE_MAPPING"])
 
     repo = env.get("INPUT_REPO") or env.get("GITHUB_REPOSITORY")
     if not repo:
         raise ValueError("Missing required repository input")
     instance_mapping = parse_instance_mapping(env["INPUT_INSTANCE_MAPPING"])
 
-    subprocess.run(["brev", "login", "--token", env["BREV_TOKEN"]], check=True)
-    if env.get("INPUT_BREV_ORG"):
-        subprocess.run(["brev", "set", env["INPUT_BREV_ORG"]], check=True)
+    subprocess.run(
+        ["brev", "login", "--api-key", env["BREV_API_KEY"]], check=True
+    )
 
     deployment = TeardownInstance(
         provider_type=StopBrev,

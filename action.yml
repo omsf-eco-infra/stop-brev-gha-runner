@@ -7,8 +7,9 @@ inputs:
   instance_mapping:
     description: "JSON object mapping Brev instance names to GitHub runner labels. Use the start action's mapping output."
     required: true
+  # Keep this input declared so old workflows receive a migration error.
   brev_org:
-    description: "Optional Brev organization name. Uses the token's active organization by default."
+    description: "Deprecated and unsupported. Remove this input and create the API key in the runner's organization."
     required: false
   repo:
     description: "Repository containing the runner registrations. Defaults to the current repository."
