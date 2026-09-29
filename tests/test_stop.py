@@ -69,7 +69,6 @@ class MainTests(unittest.TestCase):
             "BREV_API_KEY": "brev-api-key",
             "GH_PAT": "gh-token",
             "GITHUB_REPOSITORY": "owner/repo",
-            "INPUT_BREV_ORG": "",
             "INPUT_INSTANCE_MAPPING": '{"brev-name": "runner-label"}',
         }
 
@@ -90,16 +89,6 @@ class MainTests(unittest.TestCase):
             gh=github.return_value,
         )
         teardown.return_value.stop_runner_instances.assert_called_once_with()
-
-    @patch("stop_brev_gha_runner.__main__.subprocess.run")
-    def test_rejects_legacy_organization_before_login(self, run):
-        env = {**self.env, "INPUT_BREV_ORG": "my-team"}
-        with patch.dict("os.environ", env, clear=True):
-            with self.assertRaisesRegex(
-                ValueError, "brev_org is no longer supported.*BREV_API_KEY"
-            ):
-                main()
-        run.assert_not_called()
 
     @patch("stop_brev_gha_runner.__main__.subprocess.run")
     def test_rejects_missing_credentials(self, run):
@@ -124,11 +113,15 @@ class MainTests(unittest.TestCase):
         with patch.dict("os.environ", self.env, clear=True):
             main()
 
-        github.return_value.remove_runner.assert_called_once_with("runner-label")
+        github.return_value.remove_runner.assert_called_once_with(
+            "runner-label"
+        )
         self.assertEqual(
             run.call_args_list,
             [
-                call(["brev", "login", "--api-key", "brev-api-key"], check=True),
+                call(
+                    ["brev", "login", "--api-key", "brev-api-key"], check=True
+                ),
                 call(["brev", "delete", "brev-name"], check=True),
                 call(
                     ["brev", "ls", "--json"],

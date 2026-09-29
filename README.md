@@ -24,8 +24,7 @@ teardown lifecycle.
 | `repo` | no | current repository | Repository containing the runner registrations. |
 
 The action requires non-empty `BREV_API_KEY` and `GH_PAT` environment variables.
-The API key selects its organization automatically. Remove any old `brev_org`
-input; the action rejects it because API keys cannot switch organizations.
+The API key selects its organization automatically.
 
 ## Usage
 

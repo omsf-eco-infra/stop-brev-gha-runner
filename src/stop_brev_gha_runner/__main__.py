@@ -10,11 +10,6 @@ from .stop import StopBrev, parse_instance_mapping
 
 def main():
     env = dict(os.environ)
-    if env.get("INPUT_BREV_ORG"):
-        raise ValueError(
-            "brev_org is no longer supported. Create a BREV_API_KEY in the "
-            "organization that owns the runners and remove brev_org."
-        )
     check_required(env, ["GH_PAT", "BREV_API_KEY", "INPUT_INSTANCE_MAPPING"])
 
     repo = env.get("INPUT_REPO") or env.get("GITHUB_REPOSITORY")
