@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v10.2.0
+      - run: uv python install
+      - name: Unit tests
+        run: uv run --locked python -m unittest discover -s tests
+      - name: Ruff lint
+        run: uv run --locked ruff check --output-format=github .
+      - name: Ruff format
+        run: uv run --locked ruff format --check .
