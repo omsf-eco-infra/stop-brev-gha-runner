@@ -16,6 +16,6 @@ jobs:
       - name: Unit tests
         run: uv run --locked python -m unittest discover -s tests
       - name: Ruff lint
-        run: uvx --from ruff==0.15.14 ruff check --output-format=github .
+        run: uv run --locked ruff check --output-format=github .
       - name: Ruff format
-        run: uvx --from ruff==0.15.14 ruff format --check .
+        run: uv run --locked ruff format --check .
