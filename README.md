@@ -22,9 +22,17 @@ teardown lifecycle.
 | --- | --- | --- | --- |
 | `instance_mapping` | yes | | The start action's `mapping` output: a JSON object mapping Brev instance names to runner labels. |
 | `repo` | no | current repository | Repository containing the runner registrations. |
+| `timeout` | no | `600` | Seconds to wait for the deleted instances to disappear from `brev ls` before failing. Must be a positive integer; absent or empty means `600`. |
 
 The action requires non-empty `BREV_API_KEY` and `GH_PAT` environment variables.
 The API key selects its organization automatically.
+
+`timeout` only bounds the post-deletion wait: the action polls `brev ls` every
+5 seconds and fails once the configured number of seconds has passed with an
+instance still listed. It is not a timeout for the `brev delete` subprocess and
+not a deadline for the whole job. Inputs are validated before `brev login`
+runs, so an invalid `timeout` fails without authenticating or deleting
+anything.
 
 ## Usage
 
@@ -63,6 +71,7 @@ jobs:
         uses: omsf-eco-infra/stop-brev-gha-runner@4b88a4d25877aafb37ca29f5f49996ab0af76ab6 # v1
         with:
           instance_mapping: ${{ needs.start-brev-runner.outputs.mapping }}
+          timeout: 900
         env:
           BREV_API_KEY: ${{ secrets.BREV_API_KEY }}
           GH_PAT: ${{ secrets.GH_PAT }}
