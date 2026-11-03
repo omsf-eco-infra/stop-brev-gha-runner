@@ -59,7 +59,7 @@ jobs:
     needs: start-brev-runner
     runs-on: ${{ fromJSON(needs.start-brev-runner.outputs.instances) }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: nvidia-smi
 
   stop-brev-runner:
@@ -68,7 +68,7 @@ jobs:
     if: ${{ always() }}
     steps:
       - name: Remove Brev runner
-        uses: omsf-eco-infra/stop-brev-gha-runner@4b88a4d25877aafb37ca29f5f49996ab0af76ab6 # v1
+        uses: omsf-eco-infra/stop-brev-gha-runner@54a8a10bd8d455457e71d14e92e78c6b216f07e7 # v1.1.0
         with:
           instance_mapping: ${{ needs.start-brev-runner.outputs.mapping }}
           timeout: 900
