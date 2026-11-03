@@ -10,3 +10,7 @@ inputs:
   repo:
     description: "Repository containing the runner registrations. Defaults to the current repository."
     required: false
+  timeout:
+    description: "Seconds to wait for the deleted instances to disappear before failing. Not a deadline for the whole job. Defaults to 600."
+    required: false
+    default: "600"
