@@ -11,11 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
-      - run: uv python install
+      - uses: prefix-dev/setup-pixi@v0.11.3
+        with:
+          pixi-version: v0.82.1
+          locked: true
       - name: Unit tests
-        run: uv run --locked python -m unittest discover -s tests
+        run: pixi run --locked test
       - name: Ruff lint
-        run: uv run --locked ruff check --output-format=github .
+        run: pixi run --locked lint
       - name: Ruff format
-        run: uv run --locked ruff format --check .
+        run: pixi run --locked format-check

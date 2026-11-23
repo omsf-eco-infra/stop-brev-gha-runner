@@ -16,6 +16,26 @@ teardown lifecycle.
 3. Add a GitHub token able to manage repository self-hosted runners as
    `GH_PAT`.
 
+## Development
+
+Install [Pixi](https://pixi.sh), then run:
+
+```sh
+pixi install --locked
+pixi run test
+pixi run lint
+pixi run format-check
+pixi run brev --version
+```
+
+`pyproject.toml` defines the Python, Brev, and development dependencies;
+`pixi.lock` pins packages and hashes for Linux and macOS on x86-64 and ARM64.
+The Docker image installs the `prod` environment, without development tools.
+
+To update Brev from conda-forge, run `pixi update brev` and commit the updated
+lockfile. Adjust the version constraint in `pyproject.toml` when moving beyond
+Brev 0.6.x. Conda-forge releases may lag upstream GitHub releases.
+
 ## Inputs
 
 | Input | Required | Default | Description |
